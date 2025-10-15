@@ -23,106 +23,7 @@ st.set_page_config(
 # To switch themes: Comment out current theme and uncomment desired theme
 
 # Option 1: Modern Professional Light Theme (CURRENT)
-st.markdown("""
-<style>
-/* ===== Modern Professional Light Theme ===== */
-:root {
-    --primary-bg: #ffffff;
-    --secondary-bg: #f8fafc;
-    --accent-bg: #e2e8f0;
-    --text-primary: #1e293b;
-    --text-secondary: #475569;
-    --accent-color: #3b82f6;
-    --success-color: #10b981;
-    --warning-color: #f59e0b;
-    --danger-color: #ef4444;
-    --border-color: #e2e8f0;
-}
 
-/* App Containers */
-html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-    background-color: var(--primary-bg) !important;
-    color: var(--text-primary) !important;
-}
-
-/* Metrics Cards - Clean and Modern */
-[data-testid="stMetric"] {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 12px !important;
-    padding: 20px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
-    transition: all 0.3s ease !important;
-}
-
-[data-testid="stMetric"]:hover {
-    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15) !important;
-    transform: translateY(-2px) !important;
-}
-
-[data-testid="stMetricValue"] {
-    color: var(--accent-color) !important;
-    font-size: 2.5rem !important;
-    font-weight: 700 !important;
-}
-
-[data-testid="stMetricLabel"] {
-    color: var(--text-secondary) !important;
-    font-size: 0.9rem !important;
-    font-weight: 500 !important;
-}
-
-/* Tables - Clean and Readable */
-[data-testid="stDataFrame"] {
-    background-color: var(--primary-bg) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 8px !important;
-    overflow: hidden !important;
-}
-
-table, th, td {
-    background-color: var(--primary-bg) !important;
-    color: var(--text-primary) !important;
-    border-color: var(--border-color) !important;
-}
-
-th {
-    background-color: var(--accent-bg) !important;
-    color: var(--text-primary) !important;
-    font-weight: 600 !important;
-}
-
-/* Headers - Professional Typography */
-h1, h2, h3 {
-    color: var(--text-primary) !important;
-    font-weight: 700 !important;
-    text-shadow: none !important;
-}
-
-/* Charts - Clean Background */
-.js-plotly-plot, .plot-container, canvas, svg {
-    background-color: transparent !important;
-}
-
-.plotly .hovertext {
-    background-color: var(--primary-bg) !important;
-    color: var(--text-primary) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 6px !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-}
-
-/* Expanders - Clean Design */
-[data-testid="stExpander"] {
-    background-color: var(--secondary-bg) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: 8px !important;
-}
-
-[data-testid="stExpander"] summary {
-    background-color: var(--accent-bg) !important;
-    color: var(--text-primary) !important;
-}
 
 /* Success Messages */
 .stSuccess {
@@ -695,7 +596,6 @@ if not offer_pending_df.empty:
 # ALTERNATIVE STYLING OPTIONS FOR BOSS PRESENTATION
 # ==========================================================
 
-"""
 OPTION 2: Executive Dark Theme
 Replace the current styling with this for a sophisticated dark theme:
 
@@ -745,7 +645,6 @@ h1, h2, h3 {
 }
 </style>
 ''', unsafe_allow_html=True)
-"""
 
 """
 OPTION 3: Vibrant Corporate Theme
@@ -800,3 +699,4 @@ h1, h2, h3 {
 </style>
 ''', unsafe_allow_html=True)
 """
+
