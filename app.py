@@ -249,6 +249,7 @@ def load_data():
     df = df[df["MIT Name"].notna() & (df["MIT Name"] != "")]  # Remove rows without names
     
     
+    
     if "Start Date" in df.columns:
         df["Start Date"] = pd.to_datetime(df["Start Date"], errors="coerce")
 
@@ -341,7 +342,7 @@ ready_for_placement = df[
 ready = len(ready_for_placement)
 
 in_training = len(
-    df[df["Status"].eq("training") & df["Week"].apply(lambda x: isinstance(x, (int, float)) and x <= 6)]
+    df[df["Status"].str.lower().eq("training") & df["Week"].apply(lambda x: isinstance(x, (int, float)) and x <= 6)]
 )
 open_jobs = len(jobs_df) if not jobs_df.empty else 0
 
@@ -434,7 +435,7 @@ else:
 # IN TRAINING SECTION
 # ==========================================================
 in_training_df = df[
-    df["Status"].eq("training")
+    df["Status"].str.lower().eq("training")
     & df["Week"].apply(lambda x: isinstance(x, (int, float)) and x <= 6)
 ]
 
