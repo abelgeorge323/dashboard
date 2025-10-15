@@ -227,7 +227,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---- LOAD DATA ----
-@st.cache_data(ttl=300)
+@st.cache_data(ttl=60)
 def load_data():
     main_data_url = (
         "https://docs.google.com/spreadsheets/d/e/"
@@ -654,3 +654,4 @@ if not offer_pending_df.empty:
     offer_pending_display = offer_pending_df[display_cols].fillna("—")
     st.dataframe(offer_pending_display, use_container_width=True, hide_index=True)
     st.caption(f"{len(offer_pending_display)} candidates with pending offers – awaiting final approval/acceptance")
+
