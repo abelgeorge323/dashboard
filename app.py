@@ -154,8 +154,11 @@ def load_active_roster():
         # Filter out "Position Identified" candidates (case-insensitive)
         main_df = main_df[~main_df['Status'].str.contains('Position Identified', case=False, na=False)]
         
-        # Process the bottom section (MIT Entering the Program) - rows without MIT Count
+        # Process the bottom section (MIT Entering the Program) - rows without MIT Count but with New Candidate Name
         entering_df = df[df['MIT Count'].isna() & df['New Candidate Name'].notna()].copy()
+        
+        # Only include "Offer Accepted" candidates from bottom section
+        entering_df = entering_df[entering_df['Status'] == 'Offer Accepted']
         
         # Clean column names
         main_df.columns = [c.strip() if isinstance(c, str) else c for c in main_df.columns]
@@ -381,11 +384,7 @@ if main_df.empty and entering_df.empty:
 all_candidates = []
 if not main_df.empty:
     all_candidates.append(main_df)
-if not entering_df.empty:
-    # Only include Offer Accepted candidates in main count
-    offer_accepted = entering_df[entering_df['Status'] == 'Offer Accepted']
-    if not offer_accepted.empty:
-        all_candidates.append(offer_accepted)
+# Note: entering_df already filtered to only "Offer Accepted" candidates above
 
 if all_candidates:
     combined_df = pd.concat(all_candidates, ignore_index=True)
@@ -414,13 +413,12 @@ if not combined_df.empty:
         (combined_df['Status'] == 'Training')
     ])
 
-# Starting MIT Program: Status = "Offer Accepted" AND Start Date > Today
+# Starting MIT Program: Status = "Offer Accepted" AND Start Date > Today (from bottom section only)
 starting_program = 0
 if not entering_df.empty:
     today = pd.Timestamp.now()
     starting_program = len(entering_df[
-        (entering_df['Status'] == 'Offer Accepted') &
-        (entering_df['Start Date'] > today)
+        entering_df['Start Date'] > today
     ])
 
 # Display metrics
