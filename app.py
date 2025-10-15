@@ -227,7 +227,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---- LOAD DATA ----
-@st.cache_data(ttl=60)  # Reduced to 1 minute for faster updates
+@st.cache_data(ttl=300)
 def load_data():
     main_data_url = (
         "https://docs.google.com/spreadsheets/d/e/"
@@ -248,10 +248,6 @@ def load_data():
     # Handle new data structure - filter out empty rows and clean data
     df = df[df["MIT Name"].notna() & (df["MIT Name"] != "")]  # Remove rows without names
     
-    # Debug: Show what data we're getting
-    st.write(f"Debug: Found {len(df)} candidates with names")
-    if len(df) > 0:
-        st.write("Sample data:", df[["MIT Name", "Week", "Status"]].head())
     
     if "Start Date" in df.columns:
         df["Start Date"] = pd.to_datetime(df["Start Date"], errors="coerce")
@@ -297,7 +293,7 @@ def load_data():
     return df, data_source
 
 
-@st.cache_data(ttl=60)  # Reduced to 1 minute for faster updates
+@st.cache_data(ttl=300)
 def load_jobs_data():
     # ✅ Updated Placement Options Google Sheets URL
     jobs_url = (
@@ -319,10 +315,6 @@ def load_jobs_data():
         return pd.DataFrame()
 
 # ---- LOAD ----
-# Add cache clear button for debugging
-if st.button("🔄 Clear Cache & Refresh Data"):
-    st.cache_data.clear()
-    st.rerun()
 
 df, data_source = load_data()
 jobs_df = load_jobs_data()
