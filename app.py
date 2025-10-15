@@ -474,7 +474,19 @@ if not jobs_df.empty:
     # Show clean columns
     clean_columns = ['Position', 'Location', 'Vertical', 'Salary']
     available_columns = [col for col in clean_columns if col in display_jobs.columns]
+
+# --- CLEAN OPEN JOB POSITIONS DATAFRAME ---
+    open_positions_df = open_positions_df.dropna(how='all')  # remove completely empty rows
+    open_positions_df = open_positions_df[open_positions_df['Job Title'].notna()]  # ensure valid job entries
     
+    # --- DISPLAY CLEAN TABLE ---
+    st.markdown("### 📍 <span style='font-weight:700;'>Open Job Positions</span>", unsafe_allow_html=True)
+    st.dataframe(
+        open_positions_df[['Job Title', 'VERT', 'Account', 'City', 'State', 'Salary']],
+        use_container_width=True,
+        hide_index=True
+    )
+
     if available_columns:
         styled_df = display_jobs[available_columns].copy()
         st.dataframe(
@@ -616,3 +628,4 @@ if not entering_df.empty:
 # ---- FOOTER ----
 st.markdown("---")
 st.caption("🔄 LIVE DATA: Loading from Google Sheets | Auto-refreshes every 5 minutes | Match scores calculated dynamically")
+
