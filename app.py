@@ -9,129 +9,79 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ---- FORCE DARK MODE ACROSS ALL BROWSERS ----
-# This locks dark theme even if Streamlit user/browser has light mode set
+# ---- SIMPLE DARK THEME ----
 st.markdown("""
 <style>
-/* ===== Force Global Dark Mode ===== */
-:root,
-html[data-theme="light"],
-html[data-theme="dark"] {
-    color-scheme: dark !important;
-    --background-color: #0e1016 !important;
-    --text-color: #e0e0e0 !important;
-    --secondary-bg-color: #151820 !important;
-    --primary-color: #4aa8e0 !important;
-}
-
-/* App Containers */
-html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"], [data-testid="stSidebar"] {
-    background-color: var(--background-color) !important;
-    color: var(--text-color) !important;
-}
-
-/* Metrics, Tables, Expanders, Charts */
-[data-testid="stMetric"],
-[data-testid="stDataFrame"],
-[data-testid="stExpander"],
-[data-testid="stPlotlyChart"],
-[data-testid="stHorizontalBlock"] {
-    background-color: var(--secondary-bg-color) !important;
-    color: var(--text-color) !important;
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 8px;
-}
-
-/* Fix white chart areas (Plotly, Vega-Lite, Matplotlib) */
-.js-plotly-plot, .plot-container, canvas, svg {
-    background-color: transparent !important;
-    color: var(--text-color) !important;
-}
-
-/* Force Plotly charts to use dark theme */
-.plotly .main-svg {
-    background-color: transparent !important;
-}
-
-.plotly .bg {
-    fill: transparent !important;
-}
-
-/* Fix Plotly hover tooltips */
-.plotly .hovertext {
-    background-color: #1a1d27 !important;
+/* Simple Dark Theme */
+html, body, [data-testid="stAppViewContainer"] {
+    background-color: #1e1e1e !important;
     color: #ffffff !important;
-    border: 1px solid #4a4e5a !important;
-    border-radius: 4px !important;
 }
 
-/* Executive clean text style (remove purple glow) */
+/* Headers */
 h1, h2, h3 {
-    color: #dbe3f0 !important;
-    text-align: center;
-    font-weight: 700;
-    text-shadow: none !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
 }
 
-/* Table */
+/* Metrics Cards */
+[data-testid="stMetric"] {
+    background-color: #2d2d2d !important;
+    border: 1px solid #444 !important;
+    border-radius: 8px !important;
+    padding: 16px !important;
+}
+
+[data-testid="stMetricValue"] {
+    color: #4CAF50 !important;
+    font-size: 2rem !important;
+    font-weight: 600 !important;
+}
+
+[data-testid="stMetricLabel"] {
+    color: #cccccc !important;
+    font-size: 0.9rem !important;
+}
+
+/* Tables */
 table, th, td {
-    background-color: #171b24 !important;
-    color: #e1e1e1 !important;
+    background-color: #2d2d2d !important;
+    color: #ffffff !important;
 }
 
-/* Hover states - Only for metrics, not expanders */
-div[data-testid="stMetric"]:hover {
-    box-shadow: 0 0 12px rgba(74,168,224,0.25);
-    transform: translateY(-1px);
-    transition: 0.3s ease;
+th {
+    background-color: #444 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
 }
 
-/* Remove hover effects from expanders in placement readiness section */
-[data-testid="stExpander"]:hover {
-    box-shadow: none !important;
-    transform: none !important;
-    transition: none !important;
-}
-
-/* Fix expander content text visibility */
-[data-testid="stExpander"] div,
-[data-testid="stExpander"] p,
-[data-testid="stExpander"] span,
-[data-testid="stExpander"] strong,
-[data-testid="stExpander"] markdown,
-[data-testid="stExpander"] .stMarkdown {
-    color: #e0e0e0 !important;
+/* Charts */
+.js-plotly-plot, .plot-container {
     background-color: transparent !important;
 }
 
-/* Ensure expander content area has proper background */
-[data-testid="stExpander"] > div {
-    background-color: var(--secondary-bg-color) !important;
+/* Expanders */
+[data-testid="stExpander"] {
+    background-color: #2d2d2d !important;
+    border: 1px solid #444 !important;
+    border-radius: 6px !important;
 }
 
-/* Scrollbars */
-* {
-    scrollbar-color: #333 #0e1016 !important;
-}
-
-/* Buttons, dropdowns, text fields */
-button, select, input, textarea {
-    background-color: #1a1d27 !important;
+[data-testid="stExpander"] summary {
+    background-color: #444 !important;
     color: #ffffff !important;
-    border: 1px solid rgba(255,255,255,0.1) !important;
-}
-button:hover {
-    background-color: #26304a !important;
 }
 
-/* Links and icons */
-a, svg, label {
-    color: #70b8ff !important;
+/* Success Messages */
+.stSuccess {
+    background-color: #2d4a2d !important;
+    border: 1px solid #4CAF50 !important;
+    color: #ffffff !important;
 }
 
-/* Remove duplicate mini title */
-[data-testid="stHeadingContainer"] h1 + div {
-    display: none !important;
+/* App background */
+.stApp {
+    background-color: #1e1e1e !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -368,25 +318,41 @@ chart_data = pd.DataFrame({
 
 with right_col:
     st.subheader("📊 Candidate Status Overview")
-    fig_pie = px.pie(
-        chart_data, names="Category", values="Count", hole=0.45,
-        color="Category", color_discrete_map=color_map
+    
+    # Create horizontal bar chart including Offer Pending
+    bar_data = pd.DataFrame({
+        "Status": ["Ready for Placement", "In Training", "Offer Pending"],
+        "Count": [ready, in_training, offer_pending]
+    })
+    
+    fig_bar = px.bar(
+        bar_data, 
+        x="Count", 
+        y="Status", 
+        orientation='h',
+        color="Status", 
+        color_discrete_map={
+            "Ready for Placement": "#007bff",
+            "In Training": "#28a745", 
+            "Offer Pending": "#ffc107"
+        },
+        text="Count"
     )
-    fig_pie.update_layout(
+    
+    fig_bar.update_layout(
         paper_bgcolor="rgba(0,0,0,0)", 
         plot_bgcolor="rgba(0,0,0,0)", 
-        font_color="white", 
-        height=400,
-        legend=dict(
-            font=dict(color="red", size=14)
-        ),
-        hoverlabel=dict(
-            bgcolor="#1a1d27",
-            font_color="white",
-            font_size=12
-        )
+        font_color="#333333", 
+        height=300,
+        showlegend=False,
+        margin=dict(l=0, r=0, t=0, b=0)
     )
-    st.plotly_chart(fig_pie, use_container_width=True)
+    
+    fig_bar.update_traces(textposition='outside')
+    fig_bar.update_xaxes(showgrid=False)
+    fig_bar.update_yaxes(showgrid=False)
+    
+    st.plotly_chart(fig_bar, use_container_width=True)
 
 with left_col:
     st.subheader("📍 Open Job Positions")
