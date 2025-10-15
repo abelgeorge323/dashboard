@@ -9,124 +9,126 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ---- FORCE DARK MODE ACROSS ALL BROWSERS ----
-# This locks dark theme even if Streamlit user/browser has light mode set
+# ---- STYLING OPTIONS FOR BOSS PRESENTATION ----
+# 
+# OPTION 1: Modern Professional Light Theme (CURRENT)
+# Clean, corporate-friendly light theme with blue accents
+#
+# OPTION 2: Executive Dark Theme (COMMENTED OUT BELOW)
+# Sophisticated dark theme with gold accents for executive presentation
+#
+# OPTION 3: Vibrant Corporate Theme (COMMENTED OUT BELOW) 
+# Bold colors with green success indicators and orange highlights
+#
+# To switch themes: Comment out current theme and uncomment desired theme
+
+# Option 1: Modern Professional Light Theme (CURRENT)
 st.markdown("""
 <style>
-/* ===== Force Global Dark Mode ===== */
-:root,
-html[data-theme="light"],
-html[data-theme="dark"] {
-    color-scheme: dark !important;
-    --background-color: #0e1016 !important;
-    --text-color: #e0e0e0 !important;
-    --secondary-bg-color: #151820 !important;
-    --primary-color: #4aa8e0 !important;
+/* ===== Modern Professional Light Theme ===== */
+:root {
+    --primary-bg: #ffffff;
+    --secondary-bg: #f8fafc;
+    --accent-bg: #e2e8f0;
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --accent-color: #3b82f6;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --border-color: #e2e8f0;
 }
 
 /* App Containers */
-html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"], [data-testid="stSidebar"] {
-    background-color: var(--background-color) !important;
-    color: var(--text-color) !important;
+html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+    background-color: var(--primary-bg) !important;
+    color: var(--text-primary) !important;
 }
 
-/* Metrics, Tables, Expanders, Charts */
-[data-testid="stMetric"],
-[data-testid="stDataFrame"],
-[data-testid="stExpander"],
-[data-testid="stPlotlyChart"],
-[data-testid="stHorizontalBlock"] {
-    background-color: var(--secondary-bg-color) !important;
-    color: var(--text-color) !important;
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 8px;
+/* Metrics Cards - Clean and Modern */
+[data-testid="stMetric"] {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+    transition: all 0.3s ease !important;
 }
 
-/* Fix white chart areas (Plotly, Vega-Lite, Matplotlib) */
-.js-plotly-plot, .plot-container, canvas, svg {
-    background-color: transparent !important;
-    color: var(--text-color) !important;
+[data-testid="stMetric"]:hover {
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15) !important;
+    transform: translateY(-2px) !important;
 }
 
-/* Force Plotly charts to use dark theme */
-.plotly .main-svg {
-    background-color: transparent !important;
+[data-testid="stMetricValue"] {
+    color: var(--accent-color) !important;
+    font-size: 2.5rem !important;
+    font-weight: 700 !important;
 }
 
-.plotly .bg {
-    fill: transparent !important;
+[data-testid="stMetricLabel"] {
+    color: var(--text-secondary) !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
 }
 
-/* Fix Plotly hover tooltips */
-.plotly .hovertext {
-    background-color: #1a1d27 !important;
-    color: #ffffff !important;
-    border: 1px solid #4a4e5a !important;
-    border-radius: 4px !important;
+/* Tables - Clean and Readable */
+[data-testid="stDataFrame"] {
+    background-color: var(--primary-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
 }
 
-/* Executive clean text style (remove purple glow) */
+table, th, td {
+    background-color: var(--primary-bg) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+th {
+    background-color: var(--accent-bg) !important;
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+}
+
+/* Headers - Professional Typography */
 h1, h2, h3 {
-    color: #dbe3f0 !important;
-    text-align: center;
-    font-weight: 700;
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
     text-shadow: none !important;
 }
 
-/* Table */
-table, th, td {
-    background-color: #171b24 !important;
-    color: #e1e1e1 !important;
-}
-
-/* Hover states - Only for metrics, not expanders */
-div[data-testid="stMetric"]:hover {
-    box-shadow: 0 0 12px rgba(74,168,224,0.25);
-    transform: translateY(-1px);
-    transition: 0.3s ease;
-}
-
-/* Remove hover effects from expanders in placement readiness section */
-[data-testid="stExpander"]:hover {
-    box-shadow: none !important;
-    transform: none !important;
-    transition: none !important;
-}
-
-/* Fix expander content text visibility */
-[data-testid="stExpander"] div,
-[data-testid="stExpander"] p,
-[data-testid="stExpander"] span,
-[data-testid="stExpander"] strong,
-[data-testid="stExpander"] markdown,
-[data-testid="stExpander"] .stMarkdown {
-    color: #e0e0e0 !important;
+/* Charts - Clean Background */
+.js-plotly-plot, .plot-container, canvas, svg {
     background-color: transparent !important;
 }
 
-/* Ensure expander content area has proper background */
-[data-testid="stExpander"] > div {
-    background-color: var(--secondary-bg-color) !important;
+.plotly .hovertext {
+    background-color: var(--primary-bg) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
 }
 
-/* Scrollbars */
-* {
-    scrollbar-color: #333 #0e1016 !important;
+/* Expanders - Clean Design */
+[data-testid="stExpander"] {
+    background-color: var(--secondary-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
 }
 
-/* Buttons, dropdowns, text fields */
-button, select, input, textarea {
-    background-color: #1a1d27 !important;
-    color: #ffffff !important;
-    border: 1px solid rgba(255,255,255,0.1) !important;
-}
-button:hover {
-    background-color: #26304a !important;
+[data-testid="stExpander"] summary {
+    background-color: var(--accent-bg) !important;
+    color: var(--text-primary) !important;
 }
 
-/* Links and icons */
-a, svg, label {
-    color: #70b8ff !important;
+/* Success Messages */
+.stSuccess {
+    background-color: #ecfdf5 !important;
+    border: 1px solid #10b981 !important;
+    color: #065f46 !important;
 }
 
 /* Remove duplicate mini title */
@@ -368,25 +370,46 @@ chart_data = pd.DataFrame({
 
 with right_col:
     st.subheader("📊 Candidate Status Overview")
-    fig_pie = px.pie(
-        chart_data, names="Category", values="Count", hole=0.45,
-        color="Category", color_discrete_map=color_map
+    
+    # Create horizontal bar chart with all statuses including Offer Pending
+    all_status_data = pd.DataFrame({
+        "Status": ["Ready for Placement", "In Training", "Offer Pending"],
+        "Count": [ready, in_training, offer_pending]
+    })
+    
+    fig_bar = px.bar(
+        all_status_data, 
+        x="Count", 
+        y="Status", 
+        orientation='h',
+        color="Status", 
+        color_discrete_map={
+            "Ready for Placement": "#3b82f6",
+            "In Training": "#10b981", 
+            "Offer Pending": "#f59e0b"
+        },
+        text="Count"
     )
-    fig_pie.update_layout(
+    
+    fig_bar.update_layout(
         paper_bgcolor="rgba(0,0,0,0)", 
         plot_bgcolor="rgba(0,0,0,0)", 
-        font_color="white", 
-        height=400,
-        legend=dict(
-            font=dict(color="red", size=14)
-        ),
+        font_color="#1e293b", 
+        height=300,
+        showlegend=False,
+        margin=dict(l=0, r=0, t=0, b=0),
         hoverlabel=dict(
-            bgcolor="#1a1d27",
-            font_color="white",
+            bgcolor="rgba(255,255,255,0.95)",
+            font_color="#1e293b",
             font_size=12
         )
     )
-    st.plotly_chart(fig_pie, use_container_width=True)
+    
+    fig_bar.update_traces(textposition='outside')
+    fig_bar.update_xaxes(showgrid=False)
+    fig_bar.update_yaxes(showgrid=False)
+    
+    st.plotly_chart(fig_bar, use_container_width=True)
 
 with left_col:
     st.subheader("📍 Open Job Positions")
@@ -466,6 +489,19 @@ else:
 # ==========================================================
 st.markdown("---")
 st.markdown("### 🎯 Placement Readiness Breakdown")
+
+# Executive Summary
+st.markdown("""
+<div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; border-left: 4px solid #3b82f6; margin-bottom: 20px;">
+    <h4 style="color: #1e293b; margin-top: 0;">📋 Executive Summary</h4>
+    <p style="color: #475569; margin-bottom: 0; line-height: 1.6;">
+        The <strong>Placement Readiness Score</strong> is a comprehensive 100-point assessment that evaluates candidate-job compatibility. 
+        Scores consider industry alignment (up to 40 points), salary progression potential (25 points), geographic fit (20 points), 
+        placement confidence level (15 points), and training readiness (10 points). Higher scores indicate stronger matches 
+        between candidates and available positions, helping prioritize placement efforts for optimal outcomes.
+    </p>
+</div>
+""", unsafe_allow_html=True)
 
 # Filter relevant candidates
 candidates_df = df[
@@ -655,3 +691,112 @@ if not offer_pending_df.empty:
     st.dataframe(offer_pending_display, use_container_width=True, hide_index=True)
     st.caption(f"{len(offer_pending_display)} candidates with pending offers – awaiting final approval/acceptance")
 
+# ==========================================================
+# ALTERNATIVE STYLING OPTIONS FOR BOSS PRESENTATION
+# ==========================================================
+
+"""
+OPTION 2: Executive Dark Theme
+Replace the current styling with this for a sophisticated dark theme:
+
+st.markdown('''
+<style>
+/* ===== Executive Dark Theme ===== */
+:root {
+    --primary-bg: #0f172a;
+    --secondary-bg: #1e293b;
+    --accent-bg: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --accent-color: #fbbf24;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --border-color: #334155;
+}
+
+html, body, [data-testid="stAppViewContainer"] {
+    background-color: var(--primary-bg) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-testid="stMetric"] {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3) !important;
+}
+
+[data-testid="stMetric"]:hover {
+    box-shadow: 0 8px 24px rgba(251, 191, 36, 0.2) !important;
+    transform: translateY(-2px) !important;
+}
+
+[data-testid="stMetricValue"] {
+    color: var(--accent-color) !important;
+    font-size: 2.5rem !important;
+    font-weight: 700 !important;
+}
+
+h1, h2, h3 {
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+}
+</style>
+''', unsafe_allow_html=True)
+"""
+
+"""
+OPTION 3: Vibrant Corporate Theme
+Replace the current styling with this for bold, energetic colors:
+
+st.markdown('''
+<style>
+/* ===== Vibrant Corporate Theme ===== */
+:root {
+    --primary-bg: #ffffff;
+    --secondary-bg: #f0fdf4;
+    --accent-bg: #dcfce7;
+    --text-primary: #166534;
+    --text-secondary: #16a34a;
+    --accent-color: #ea580c;
+    --success-color: #22c55e;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --border-color: #bbf7d0;
+}
+
+html, body, [data-testid="stAppViewContainer"] {
+    background-color: var(--primary-bg) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-testid="stMetric"] {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%) !important;
+    border: 2px solid var(--success-color) !important;
+    border-radius: 16px !important;
+    padding: 24px !important;
+    box-shadow: 0 4px 16px rgba(34, 197, 94, 0.2) !important;
+}
+
+[data-testid="stMetric"]:hover {
+    box-shadow: 0 8px 24px rgba(234, 88, 12, 0.3) !important;
+    transform: translateY(-3px) !important;
+    border-color: var(--accent-color) !important;
+}
+
+[data-testid="stMetricValue"] {
+    color: var(--accent-color) !important;
+    font-size: 2.8rem !important;
+    font-weight: 800 !important;
+}
+
+h1, h2, h3 {
+    color: var(--text-primary) !important;
+    font-weight: 800 !important;
+    text-shadow: 2px 2px 4px rgba(34, 197, 94, 0.2) !important;
+}
+</style>
+''', unsafe_allow_html=True)
+"""
